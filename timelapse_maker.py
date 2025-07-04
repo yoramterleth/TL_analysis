@@ -14,20 +14,20 @@ ImageFile.LOAD_TRUNCATED_IMAGES = True
 # %%
 # set the station_name and path to folder
 camera_name = 'tls_right'
-dir_name = '100CANON_29_7_2023'
-imgpath = 'D:/JIRP/JIRP_TL/'+ camera_name + '/' + dir_name + '/' # path to image folder
+dir_name = 'DCIM'
+imgpath =  './' + dir_name + '/' # path to image folder
 print(camera_name)
 os.listdir(imgpath)
 
 # set the name of the folder to save to 
 dir_save_name = 'timelapse_corrected_times'
-save_path = 'D:/JIRP/JIRP_TL/'+ camera_name + '/'+ dir_save_name + '/' # path to saving folder
+save_path = './'+ dir_save_name + '/' # path to saving folder
 
 
 #%% make time array 
 
 # force own timestamps ?
-override_timestamps = True
+override_timestamps = False
 
 # set timestamp array 
 img1_time = datetime.datetime(2023,7,17,16,8,12)
@@ -52,15 +52,20 @@ tmstp_idx = 0
 # %%
 
 
-for file in os.listdir(imgpath):
+for root, dirs, files in os.walk(imgpath):
+    for file in files:
         if file.startswith('IMG') and file.endswith('JPG'):
+
+            # get full flepath 
+            file_path = os.path.join(root, file)
+
             # grab fileize
-            sizeMB = os.path.getsize(imgpath+file)/10e5 # file size in MB
+            sizeMB = os.path.getsize(file_path)/10e5 # file size in MB
 
             # the dark images (nighttime) will be smaller than 1 MB, skip those
-            if sizeMB > 2:            
+            if sizeMB > 4:            
                 # open image and grab time stamp
-                img = Image.open(imgpath+file)
+                img = Image.open(file_path)
        
                 if override_timestamps:
                      img_datetime = img_time_list[tmstp_idx]
@@ -102,4 +107,3 @@ for file in os.listdir(imgpath):
             print(tmstp_idx)
 
 # %%
-
