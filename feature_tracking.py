@@ -1,6 +1,14 @@
+"""
+This the script that is used to record the velocity based on the timelpase images. 
+The goal is to choose a feature, and click on it in each subsequent image until you lose track of it. 
+The pixel coordinates that you click are automatically recorded to a csv file. One csv is saved per track, 
+the script will prompt for a new track name for each script. Make sure to input the correct track name (see track naming convention below). 
+This script best run as a notebook. I do this through the vscode run cells functionality, but you can also use an actual Jupyter notebook. 
+If that is the case, simply ciopy past this script into a cell and then run it.
+"""
 
 #%%
-# use this if you are running this in a notbook. 
+# use this if you are running this in a notebook. 
 %matplotlib widget
 
 #%%
@@ -13,29 +21,25 @@ from matplotlib.image import imread
 import ipywidgets as widgets
 from IPython.display import display
 
-
-# Set a cutoff datetime to start after 
+##############################################################
+# Set a cutoff datetime to start after #######################
 start_after = datetime(2025, 5, 1, 0, 0, 0) ##################
-###################################################
+##############################################################
 
-image_folder = Path("./filtered_for_tracking")  # Change this
-output_folder = Path("./csv_tracking/")  # Change this
-#track_name = "t16"
+# here set the correct filepaths
+image_folder = Path("./filtered_for_tracking")  # to the images dowloaded from google drive
+output_folder = Path("./csv_tracking/")  # to the location of the output csvs
 
+
+
+##### End of user input #########################################################################################
 # Prompt user for track name
 track_name = input("Enter a track name: ").strip()
-
-# # Optional: set a default if user just hits enter
-# if not track_name:
-#     track_name = "default_track"
-
 
 output_folder.mkdir(parents=True, exist_ok=True)
 csv_path = output_folder / f"{track_name}.csv"
 
 image_files = sorted([f for f in image_folder.iterdir() if f.suffix.lower() in ['.jpg', '.jpeg', '.png']])
-
-
 
 # Write CSV header if needed
 if not csv_path.exists():
@@ -107,7 +111,7 @@ def show_image():
     ax.set_title(f"{image_files[index].name} — Click to record or right click to skip")
     fig.canvas.draw()
 
-# === INITIALIZE ===
+# init figure
 if fig is None or ax is None:
     fig, ax = plt.subplots(figsize=(12, 8))
     fig.canvas.mpl_connect('button_press_event', onclick)
