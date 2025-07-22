@@ -7,9 +7,12 @@ This is a code repository with various scripts for processing timelapse imagery.
 
 * project_tracked_features.py converts the pixel coordinates to terrain coordinates. It takes the .csv file produced with the feature tracking script and produces a new csv tha will be used in the pseed calculation.
 * calculate_flow_speed.py Uses the projected coordinates csv to calculate ice velocities for each track.
-* plot_figures can be used to visualise the results. It pulls data from the csv files produced when running project_tracked_features and calculate_flow_speed.
+* plot_figures.py can be used to visualise the results. It pulls data from the csv files produced when running project_tracked_features and calculate_flow_speed.
 
   **Be mindful that it is easy to overwrite csv files in all these scripts! Double check that it is okay to do so when running anything.**
+
+## Needed for feature tracking
+The only script that is necessary for feature tracking is feature_tracking.py (and the packages within). To compute and plot the velocities you tracked, you can use project_tracked_features.py, calculate_flow_speed.py, and  plot_figures.py. This does also require the dem .tif.
 
 ## Track csv file naming convention:
 
