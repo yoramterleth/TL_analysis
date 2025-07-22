@@ -23,6 +23,6 @@ We have split up the icefall into an upper section and a lower section as follow
 ![icefall boundary](icefall_boundaries_ft.png)
 Roughly above the blue line is upper icefall, below the blue line is lower icefall. 
   
-When prompted to enter a name for your track, use ***u*** for upper icefall, or ***l*** for lower icefall, then the first letter of your name, then an incremental number. For example, the 3rd track Yoram records of the lower icefall would be ***ly3.csv***. 
+When prompted to enter a name for your track, use ***u*** for upper icefall, or ***l*** for lower icefall, then the first letter of your name, then an incremental number. For example, the 3rd track Yoram records of the lower icefall would be ***ly3.csv***. Notew that points get recorded to the csv as soon as you click them. Entering the same track number again will not overwrite a csv, but add extra rows to it - this will mess with the speed calculation, so please try to avoid this. 
 
 **Thanks for your work!**
