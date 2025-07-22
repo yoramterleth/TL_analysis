@@ -1,4 +1,4 @@
-""" This script loops through the csv that were user produced for tracking. """
+""" This script loops through the csv that were user produced for tracking. Yoram Terleth July 2025 """
 
 #%% 
 
@@ -7,24 +7,23 @@ import pandas as pd
 import rasterio
 from pathlib import Path
 
-# === CONFIGURATION ===
+# define csv paths and dem
 csv_dir = Path("./csv_tracking")        # Folder with input CSVs
 output_dir = Path("./csv_projected")    # Folder for output CSVs
 dem_path = Path("./VL_DEM_ibai_UTM.tif")
 
 output_dir.mkdir(parents=True, exist_ok=True)
 
-# === CAMERA SETUP ===
+# camera position and proerties
 cam_x, cam_y, cam_z = 887045, 6540858, 1373  # UTM
 pitch_deg, yaw_deg, roll_deg = 0, 135, 0
 image_width, image_height = 1920, 1440
 
-# Focal length & sensor size (Canon T3)
 focal_mm = 34
 sensor_width_mm = 22.3
 sensor_height_mm = 14.9
 
-# === INTRINSICS ===
+# derive pixel propertiers (from chatgpt)
 fx = (focal_mm / sensor_width_mm) * image_width
 fy = (focal_mm / sensor_height_mm) * image_height
 cx = image_width / 2
@@ -32,7 +31,7 @@ cy = image_height / 2
 pixel_size_x = sensor_width_mm / image_width
 pixel_size_y = sensor_height_mm / image_height
 
-# === Load DEM once ===
+# load dem from tif
 with rasterio.open(dem_path) as dem_ds:
     dem = dem_ds.read(1, masked=True)
     dem_bounds = dem_ds.bounds
@@ -66,7 +65,7 @@ with rasterio.open(dem_path) as dem_ds:
                     return utm_x, utm_y, ground_z
         return None
 
-    # === Loop through all CSVs ===
+    # dynamic part of the script, loop through each csv (track) and then loop through each point.
     for csv_path in csv_dir.glob("*.csv"):
         df = pd.read_csv(csv_path)
         out_rows = []
