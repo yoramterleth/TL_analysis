@@ -1,6 +1,6 @@
 
 #%%
-
+# use this if you are running this in a notbook. 
 %matplotlib widget
 
 #%%
@@ -13,10 +13,21 @@ from matplotlib.image import imread
 import ipywidgets as widgets
 from IPython.display import display
 
-# === CONFIGURATION ===
+
+# Set a cutoff datetime to start after 
+start_after = datetime(2025, 5, 1, 0, 0, 0) ##################
+###################################################
+
 image_folder = Path("./filtered_for_tracking")  # Change this
 output_folder = Path("./csv_tracking/")  # Change this
-track_name = "t15"
+#track_name = "t16"
+
+# Prompt user for track name
+track_name = input("Enter a track name: ").strip()
+
+# # Optional: set a default if user just hits enter
+# if not track_name:
+#     track_name = "default_track"
 
 
 output_folder.mkdir(parents=True, exist_ok=True)
@@ -32,10 +43,7 @@ if not csv_path.exists():
         writer = csv.writer(f)
         writer.writerow(['filename', 'timestamp', 'x', 'y'])
 
-# === STATE ===
 
-# Set a cutoff datetime to start after (customize as needed)
-start_after = datetime(2025, 5, 1, 0, 0, 0)
 
 # Find index of first image after the cutoff
 index = 0
@@ -110,3 +118,5 @@ skip_button.on_click(skip_clicked)
 
 display(skip_button)
 show_image()
+
+# %%
