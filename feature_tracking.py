@@ -21,6 +21,7 @@ from matplotlib.image import imread
 import ipywidgets as widgets
 from IPython.display import display
 
+# It would be annoying to have to go from the very beginning each time. Here you can set a start-date. 
 ##############################################################
 # Set a cutoff datetime to start after #######################
 start_after = datetime(2025, 5, 1, 0, 0, 0) ##################
