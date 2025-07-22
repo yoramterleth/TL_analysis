@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import rasterio
 from pathlib import Path
 
-# === PATHS ===
+# define csv path and dem
 projected_dir = Path("./csv_projected")
 velocity_dir = Path("./csv_velocities")
 dem_path = Path("./VL_DEM_ibai_UTM.tif")
@@ -14,13 +14,13 @@ dem_path = Path("./VL_DEM_ibai_UTM.tif")
 track_plot_path = Path("./figures_out/all_tracks_on_dem.png")
 velocity_plot_path = Path("./figures_out/all_velocity_timeseries.png")
 
-# === Load DEM ===
+# load dem tif
 with rasterio.open(dem_path) as dem_ds:
     dem = dem_ds.read(1, masked=True)
     bounds = dem_ds.bounds
     dem_extent = [bounds.left, bounds.right, bounds.bottom, bounds.top]
 
-# === 1. DEM TRACK PLOT ===
+#% make a plot showing the tracks of the clicked points on the dem.
 fig1, ax1 = plt.subplots(figsize=(12, 10))
 ax1.imshow(dem, extent=dem_extent, cmap='terrain', origin='upper')
 
@@ -40,7 +40,7 @@ plt.savefig(track_plot_path, dpi=300)
 
 
 #%%
-# === 2. VELOCITY TIME SERIES PLOT WITH GLOBAL AVERAGE ===
+# plot the ice velocities
 fig2, ax2 = plt.subplots(figsize=(12, 6))
 
 all_series = []  # to store each track's series for averaging
@@ -56,13 +56,12 @@ for csv_path in velocity_dir.glob("*_velocities.csv"):
     series = series.set_index('timestamp')
     all_series.append(series)
 
-# === Compute global average ===
-# Outer join on timestamps, then row-wise mean
+# calculate average of each time step
 combined_df = pd.concat(all_series, axis=1, join='outer')
 combined_df.columns = [f"track_{i}" for i in range(len(all_series))]
 combined_df['mean_speed'] = combined_df.mean(axis=1)
 
-# Plot the global average
+# plot figure 
 ax2.plot(combined_df.index, combined_df['mean_speed'], color='black',
          linewidth=2.5, label='Average Speed (all tracks)')
 
