@@ -34,8 +34,23 @@ output_folder = Path("./csv_tracking/")  # to the location of the output csvs
 
 
 ##### End of user input #########################################################################################
-# Prompt user for track name
-track_name = input("Enter a track name: ").strip()
+
+## prompt for track name ## 
+# Find the most recently modified track folder or file
+existing_tracks = list(output_folder.glob("*"))
+recent_track = None
+
+if existing_tracks:
+    recent_track = max(existing_tracks, key=lambda p: p.stat().st_mtime).stem
+
+# Prompt the user
+if recent_track:
+    prompt = f"Enter a track name (most recent: '{recent_track}'): "
+else:
+    prompt = "Enter a track name: "
+
+track_name = input(prompt).strip()
+## ## 
 
 output_folder.mkdir(parents=True, exist_ok=True)
 csv_path = output_folder / f"{track_name}.csv"
