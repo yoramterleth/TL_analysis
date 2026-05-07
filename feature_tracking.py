@@ -35,7 +35,7 @@ output_folder = Path("./csv_tracking/")  # to the location of the output csvs
 
 ##### End of user input #########################################################################################
 
-## prompt for track name ## 
+
 # Find the most recently modified track folder or file
 existing_tracks = list(output_folder.glob("*"))
 recent_track = None
@@ -57,7 +57,7 @@ csv_path = output_folder / f"{track_name}.csv"
 
 image_files = sorted([f for f in image_folder.iterdir() if f.suffix.lower() in ['.jpg', '.jpeg', '.png']])
 
-# Write CSV header if needed
+# make a csv file
 if not csv_path.exists():
     with open(csv_path, 'w', newline='') as f:
         writer = csv.writer(f)
